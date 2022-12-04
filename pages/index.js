@@ -27,49 +27,229 @@ const fakeData = [
         id: 0,
         name: "Okay",
     },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
+    {
+        id: 0,
+        name: "Drake",
+    },
+    {
+        id: 0,
+        name: "Drace",
+    },
+    {
+        id: 0,
+        name: "Drank",
+    },
+    {
+        id: 0,
+        name: "X",
+    },
+    {
+        id: 0,
+        name: "Trol",
+    },
+    {
+        id: 0,
+        name: "Okay",
+    },
 ];
+
+const Search = () => {
+    return (
+        <div className="searchContainer">
+            <img src="https://img.icons8.com/ios-glyphs/90/FFFFFF/search-contacts.png" />
+            <div className="text">There are no Trainees with this name</div>
+            <style jsx>{`
+                .searchContainer {
+                    width: 100%;
+
+                    padding: 40px;
+
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 20px;
+                }
+
+                .text {
+                    width: 100%;
+
+                    font-size: 30px;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            `}</style>
+        </div>
+    );
+};
 
 export default function Home() {
     const inputRef = useRef(null);
-    const [data, setData] = useState(fakeData);
+    const [data, setData] = useState([]);
 
     const handleOnChange = (e) => {
         const filteredData = fakeData.filter((t) => t.name.toLowerCase().includes(inputRef.current.value.trim()));
-        setData(filteredData);
+
+        switch (inputRef.current.value.trim()) {
+            case "*":
+                setData(fakeData);
+                break;
+            case "":
+                setData([]);
+                break;
+            default:
+                setData(filteredData);
+        }
     };
 
     return (
         <div className="App">
             <div className="inputSectionContainer">
                 <Label label="Search for Trainee" />
-                <input type="text" onChange={handleOnChange} ref={inputRef} />
+                <input type="text" onChange={handleOnChange} ref={inputRef} placeholder="Input trainees' name here" />
             </div>
 
-            <div className="resultContainer">
-                <Label label="Search result" />
-                <div className="result">
-                    {data.map((t, idx) => {
-                        return (
-                            <Link href={`/trainee/${t.id}`} key={idx} style={{ width: "100%" }}>
-                                <div className="traineeContainer">
-                                    <div className="profileImage"></div>
-                                    {t.name}
-                                </div>
-                            </Link>
-                        );
-                    })}
+            {data.length === 0 ? (
+                <Search />
+            ) : (
+                <div className="resultContainer">
+                    <div className="result">
+                        {data.map((t, idx) => {
+                            return (
+                                <Link href={`/trainee/${t.id}`} key={idx} style={{ width: "100%" }}>
+                                    <div className="traineeContainer">
+                                        <div className="profileImage" style={{ backgroundImage: `url('https://a.ppy.sh/1')` }}></div>
+                                        {t.name}
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            )}
 
             <style jsx>{`
                 .App {
-                    width: 1000px;
-                    height: 100%;
-
                     padding: 30px;
-
-                    background-color: #202020;
-                    border-radius: 20px;
 
                     display: flex;
                     flex-wrap: wrap;
@@ -92,7 +272,7 @@ export default function Home() {
 
                     padding: 10px 20px;
 
-                    background-color: #151515;
+                    background-color: #292123;
 
                     border: none;
                     border-radius: 100px;
@@ -113,6 +293,8 @@ export default function Home() {
                     grid-template-columns: repeat(4, 1fr);
 
                     gap: 10px;
+
+                    padding: 2px;
                 }
 
                 .traineeContainer {
@@ -120,7 +302,7 @@ export default function Home() {
                     width: 100%;
                     height: 60px;
 
-                    background-color: #151515;
+                    background-color: #292123;
                     border-radius: 10px;
 
                     display: flex;
@@ -128,13 +310,21 @@ export default function Home() {
                     gap: 10px;
 
                     padding: 10px;
+
+                    font-size: 13px;
+                }
+
+                .traineeContainer:hover {
+                    outline: solid 2px #a83b4f;
+                    background-color: #33272a;
                 }
 
                 .profileImage {
                     height: 100%;
                     aspect-ratio: 1/1;
 
-                    background-color: #242424;
+                    background-size: cover;
+
                     border-radius: 10px;
                 }
             `}</style>

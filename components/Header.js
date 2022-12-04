@@ -5,12 +5,21 @@ const Header = () => {
         <div className="headerContainer">
             <div className="header">
                 <Link href="/">
-                    <div className="homeButton">
+                    <div className="button">
                         <img src="https://img.icons8.com/ios-glyphs/30/ffffff/home.png" />
                         Home
                     </div>
                 </Link>
-                <div className="logoutButton">Logout</div>
+                <Link href="/">
+                    <div className="button">
+                        <img src="https://img.icons8.com/ios-glyphs/90/ffffff/person-male.png" />
+                        Add Trainee
+                    </div>
+                </Link>
+                <div className="button logout">
+                    <img src="https://img.icons8.com/ios-glyphs/90/a83b4f/exit.png" />
+                    Logout
+                </div>
             </div>
             <style jsx>{`
                 .headerContainer {
@@ -20,7 +29,9 @@ const Header = () => {
                     display: flex;
                     justify-content: center;
 
-                    padding-top: 20px;
+                    padding: 10px;
+
+                    background-color: #a83b4f;
                 }
 
                 .header {
@@ -31,7 +42,7 @@ const Header = () => {
                     flex-wrap: wrap;
                 }
 
-                .homeButton {
+                .button {
                     position: relative;
                     height: 100%;
 
@@ -47,23 +58,26 @@ const Header = () => {
                     user-select: none;
 
                     font-size: 13px;
+                    font-weight: 600;
+
+                    z-index: 1;
+
                 }
 
-                .homeButton img {
+                .button img {
                     width: 20px;
                     transition: inherit;
                 }
 
-                .homeButton:hover {
+                .button:hover {
                     color: #151515;
-                    font-weight: 600;
                 }
 
-                .homeButton:hover img {
+                .button:hover img {
                     filter: invert(1);
                 }
 
-                .homeButton:before {
+                .button:before {
                     content: "";
                     position: absolute;
 
@@ -83,54 +97,29 @@ const Header = () => {
                     transition: inherit;
                 }
 
-                .homeButton:hover:before {
+                .button:hover:before {
                     width: 100%;
                     opacity: 1;
                 }
 
-                .logoutButton {
-                    position: relative;
-                    height: 100%;
-
+                .logout {
                     margin-left: auto;
-
-                    padding: 0 20px;
-
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-
-                    border-radius: 30px;
-
-                    transition: ease-in-out 100ms;
-                    user-select: none;
-
-                    font-size: 13px;
                 }
 
-                .logoutButton:before {
-                    content: "";
-                    position: absolute;
-
-                    left: 0;
-                    right: 0;
-                    margin-inline: auto;
-
-                    width: 40px;
-                    height: 100%;
-
-                    opacity: 0;
-
-                    background-color: #bd2a49;
-                    border-radius: inherit;
-
-                    z-index: -1;
-                    transition: inherit;
+                .logout img {
+                    filter: saturate(0) brightness(1000%);
                 }
 
-                .logoutButton:hover:before {
-                    width: 100%;
-                    opacity: 1;
+                .logout:hover {
+                    color: #bd2a49;
+                }
+
+                .logout:before {
+                    background-color: #fff;
+                }
+
+                .logout:hover img {
+                    filter: none;
                 }
             `}</style>
         </div>
