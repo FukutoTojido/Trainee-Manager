@@ -1,4 +1,4 @@
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { Label } from "../../components/OtherComponents";
 import { useState } from "react";
 

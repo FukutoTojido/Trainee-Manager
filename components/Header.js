@@ -10,7 +10,7 @@ const Header = () => {
                         Home
                     </div>
                 </Link>
-                <Link href="/">
+                <Link href="/add">
                     <div className="button">
                         <img src="https://img.icons8.com/ios-glyphs/90/ffffff/person-male.png" />
                         Add Trainee
