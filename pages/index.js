@@ -110,12 +110,13 @@ export default function Home() {
                     width: 100%;
 
                     display: grid;
-                    grid-template-columns: auto auto auto auto;
+                    grid-template-columns: repeat(4, 1fr);
 
                     gap: 10px;
                 }
 
                 .traineeContainer {
+                    position: relative;
                     width: 100%;
                     height: 60px;
 
