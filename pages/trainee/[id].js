@@ -1,6 +1,9 @@
 import { useRouter } from "next/router";
 import { Label } from "../../components/OtherComponents";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
+import axios from "axios";
 
 const fakeTraineeData = {
     traineeDetail: {
@@ -113,9 +116,9 @@ const Statistic = (props) => {
                     })}
                 </div>
                 <div className="seasonStat">
-                    {seasonData.scores.map((e) => {
+                    {seasonData.scores.map((e, idx) => {
                         return e.score ? (
-                            <div className="seasonEpisode">
+                            <div className="seasonEpisode" key={idx}>
                                 <div className="episodeNumber">
                                     <img src="https://img.icons8.com/ios-glyphs/30/cfb2ba/video-conference.png" />
                                     Episode {e.episode}
@@ -230,23 +233,23 @@ const Information = (props) => {
             <Label label="Information" />
             <div className="information">
                 <div className="profileImage">
-                    <img src={`/trainees/${props.information.id}.png`} />
+                    <img src={props.information.Photo} />
                 </div>
                 <div className="text">
-                    <div className="name">{props.information.name}</div>
+                    <div className="name">{props.information.Lname + " " + props.information.Fname}</div>
                     <div className="otherInformation">
                         <ul>
                             <li>
                                 <img src="https://img.icons8.com/ios-glyphs/30/aaaaaa/contact-card.png" />
-                                {props.information.ssn}
+                                {props.information.SSN}
                             </li>
                             <li>
                                 <img src="https://img.icons8.com/ios-glyphs/30/7898de/phone--v1.png" />
-                                {props.information.phone}
+                                {props.information.Phone}
                             </li>
                             <li>
                                 <img src="https://img.icons8.com/ios-glyphs/30/cc476f/order-delivered.png" />
-                                {props.information.address}
+                                {props.information.Address}
                             </li>
                             <li>
                                 <img src="https://img.icons8.com/ios-glyphs/30/c2ac2f/trophy.png" />
@@ -281,6 +284,9 @@ const Information = (props) => {
                 .profileImage {
                     height: 100%;
                     aspect-ratio: 1/1;
+
+                    overflow: hidden;
+                    border-radius: 30px;
                 }
 
                 .profileImage img {
@@ -326,9 +332,23 @@ const Information = (props) => {
 };
 
 const TraineePage = () => {
-    return (
+    const router = useRouter();
+    const [traineeData, setTraineeData] = useState({});
+
+    const fetcher = (url) => axios.get(url).then((res) => res.data);
+    const { data, error } = useSWRImmutable(router.query.id ? `/api/v1/getTrainee/${router.query.id}` : "", fetcher);
+
+    if (error) return <div>Error</div>;
+
+    useEffect(() => {
+        if (data && !Object.keys(data).includes("auth")) {
+            setTraineeData(data.data);
+        }
+    });
+
+    return JSON.stringify(traineeData) !== "{}" ? (
         <div className="App">
-            <Information information={fakeTraineeData.traineeDetail} />
+            <Information information={traineeData} />
             <Statistic statistic={fakeTraineeData.traineeSeasonsDetail} />
             <style jsx>
                 {`
@@ -345,6 +365,8 @@ const TraineePage = () => {
                 `}
             </style>
         </div>
+    ) : (
+        ""
     );
 };
 

@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { setCookie } from "cookies-next";
+import { setCookie, getCookies } from "cookies-next";
+import axios from "axios";
 
 const Login = () => {
     const unameRef = useRef(null);
@@ -10,12 +11,24 @@ const Login = () => {
         handleSubmission();
     };
 
-    const handleSubmission = () => {
+    const handleSubmission = async () => {
         if (unameRef.current.value.trim() === "" || pwdRef.current.value.trim() === "") return;
         const authStatus = {
             uname: unameRef.current.value.trim(),
             pwd: pwdRef.current.value.trim(),
         };
+
+        // Gọi API login gì gì đó ở đây
+        const res = (
+            await axios.post("/api/v1/login", {
+                uname: authStatus.uname,
+                pwd: authStatus.pwd,
+            })
+        ).data;
+
+        if (!res.auth) {
+            return;
+        }
 
         setCookie("authStatus", JSON.stringify(authStatus));
         window.location.reload();

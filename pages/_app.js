@@ -7,7 +7,7 @@ import { setCookie, getCookies } from "cookies-next";
 
 function MyApp({ Component, pageProps }) {
     const router = useRouter();
-    const [isAuth, setIsAuth] = useState(false);
+    const [isAuth, setIsAuth] = useState(null);
     // let isAuth = false;
 
     useEffect(() => {
@@ -27,25 +27,24 @@ function MyApp({ Component, pageProps }) {
             return;
         }
 
-        // Gọi API login gì gì đó ở đây
         setIsAuth(true);
     }, []);
 
     useEffect(() => {
         if (!router.isReady) return;
 
-        if (!isAuth && router.asPath !== "/") router.push("/");
+        if (isAuth === false && router.asPath !== "/") router.push("/");
     }, [router.asPath, isAuth]);
 
-    if (!isAuth) {
-        return <Login />;
-    }
+    if (isAuth === null) return <div></div>;
+
+    if (!isAuth) return <Login />;
 
     return (
         <div className="pageContainer">
             <Header />
             <div className="AppContainer">
-                <Component {...pageProps} />
+                <Component {...pageProps} authStatus={JSON.parse(decodeURIComponent(getCookies().authStatus))} />
             </div>
         </div>
     );

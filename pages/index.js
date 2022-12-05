@@ -1,6 +1,8 @@
 import { Label } from "../components/OtherComponents";
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import useSWR from "swr";
+import axios from "axios";
 
 const fakeData = [
     {
@@ -202,22 +204,35 @@ const Search = () => {
     );
 };
 
-export default function Home() {
+export default function Home(props) {
     const inputRef = useRef(null);
-    const [data, setData] = useState([]);
+    const [traineeData, setTraineeData] = useState(null);
+
+    const fetcher = (url) =>
+        axios
+            .get(url)
+            .then((res) => res.data);
+
+    const { data, error } = useSWR("/api/v1/getAllTrainee", fetcher);
+
+    if (error) return <div></div>;
+
+    useEffect(() => {
+        if (data !== undefined && JSON.stringify(data) !== "{}") {
+            setTraineeData(data.data);
+        }
+    }, [JSON.stringify(data)]);
 
     const handleOnChange = (e) => {
-        const filteredData = fakeData.filter((t) => t.name.toLowerCase().includes(inputRef.current.value.trim()));
+        const filteredData = data.data.filter((t) => `${t.Lname} ${t.Fname}`.toLowerCase().includes(inputRef.current.value.toLowerCase().trim()));
 
         switch (inputRef.current.value.trim()) {
             case "*":
-                setData(fakeData);
-                break;
             case "":
-                setData([]);
+                setTraineeData(data.data);
                 break;
             default:
-                setData(filteredData);
+                setTraineeData(filteredData);
         }
     };
 
@@ -228,17 +243,19 @@ export default function Home() {
                 <input type="text" onChange={handleOnChange} ref={inputRef} placeholder="Input trainees' name here" />
             </div>
 
-            {data.length === 0 ? (
+            {!traineeData ? (
+                <></>
+            ) : traineeData.length === 0 ? (
                 <Search />
             ) : (
                 <div className="resultContainer">
                     <div className="result">
-                        {data.map((t, idx) => {
+                        {traineeData.map((t, idx) => {
                             return (
-                                <Link href={`/trainee/${t.id}`} key={idx} style={{ width: "100%" }}>
+                                <Link href={`/trainee/${t.SSN}`} key={idx} style={{ width: "100%" }}>
                                     <div className="traineeContainer">
-                                        <div className="profileImage" style={{ backgroundImage: `url('https://a.ppy.sh/1')` }}></div>
-                                        {t.name}
+                                        <div className="profileImage" style={{ backgroundImage: `url('${t.Photo}')` }}></div>
+                                        {`${t.Lname} ${t.Fname}`}
                                     </div>
                                 </Link>
                             );
