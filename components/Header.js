@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { setCookie } from "cookies-next";
 
 const Header = () => {
     return (
@@ -16,7 +17,13 @@ const Header = () => {
                         Add Trainee
                     </div>
                 </Link>
-                <div className="button logout">
+                <div
+                    className="button logout"
+                    onClick={() => {
+                        setCookie("authStatus", JSON.stringify({}));
+                        window.location.reload();
+                    }}
+                >
                     <img src="https://img.icons8.com/ios-glyphs/90/a83b4f/exit.png" />
                     Logout
                 </div>
@@ -61,7 +68,6 @@ const Header = () => {
                     font-weight: 600;
 
                     z-index: 1;
-
                 }
 
                 .button img {

@@ -1,14 +1,38 @@
+import { useRef } from "react";
+import { setCookie } from "cookies-next";
+
 const Login = () => {
+    const unameRef = useRef(null);
+    const pwdRef = useRef(null);
+
+    const handleKeyDown = (e) => {
+        if (e.key !== "Enter") return;
+        handleSubmission();
+    };
+
+    const handleSubmission = () => {
+        if (unameRef.current.value.trim() === "" || pwdRef.current.value.trim() === "") return;
+        const authStatus = {
+            uname: unameRef.current.value.trim(),
+            pwd: pwdRef.current.value.trim(),
+        };
+
+        setCookie("authStatus", JSON.stringify(authStatus));
+        window.location.reload();
+    };
+
     return (
         <div className="loginPage">
             <div className="loginContainer">
                 <div className="logo">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/The_iDOLM%40STER_logo.svg/320px-The_iDOLM%40STER_logo.svg.png" />
                 </div>
-                <input type="text" placeholder="username" />
-                <input type="text" placeholder="password" />
+                <input type="text" placeholder="username" ref={unameRef} onKeyDown={handleKeyDown} />
+                <input type="password" placeholder="password" ref={pwdRef} onKeyDown={handleKeyDown} />
 
-                <div className="submitButton">Login</div>
+                <div className="submitButton" onClick={handleSubmission}>
+                    Login
+                </div>
             </div>
             <style jsx>{`
                 .loginPage {
