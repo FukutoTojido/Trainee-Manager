@@ -94,12 +94,14 @@ const fakeTraineeData = {
 };
 
 const Statistic = (props) => {
+    if (JSON.stringify(props.statistic) === "{}") return;
+
     const [season, setSeason] = useState(0);
-    const [seasonData, setSeasonData] = useState(props.statistic[season]);
+    const [seasonData, setSeasonData] = useState(props.statistic[Object.keys(props.statistic)[season]]);
 
     const changeSeason = (idx) => {
         setSeason(idx);
-        setSeasonData(props.statistic[idx]);
+        setSeasonData(props.statistic[Object.keys(props.statistic)[idx]]);
     };
 
     return (
@@ -107,29 +109,27 @@ const Statistic = (props) => {
             <Label label="Statistic" />
             <div className="statistic">
                 <div className="seasonNavigator">
-                    {props.statistic.map((s, idx) => {
+                    {Object.keys(props.statistic).map((s, idx) => {
                         return (
                             <div className={`seasonButton ${idx === season ? "selected" : ""}`} key={idx} onClick={() => changeSeason(idx)}>
-                                Season {s.season}
+                                Season {s}
                             </div>
                         );
                     })}
                 </div>
                 <div className="seasonStat">
-                    {seasonData.scores.map((e, idx) => {
-                        return e.score ? (
+                    {seasonData.map((e, idx) => {
+                        return (
                             <div className="seasonEpisode" key={idx}>
                                 <div className="episodeNumber">
                                     <img src="https://img.icons8.com/ios-glyphs/30/cfb2ba/video-conference.png" />
-                                    Episode {e.episode}
+                                    Episode {e.Episode}
                                 </div>
                                 <div className="score">
                                     <img src="https://img.icons8.com/ios-glyphs/30/cfb2ba/combo-chart--v1.png" />
-                                    {e.score}
+                                    {e.Votes}
                                 </div>
                             </div>
-                        ) : (
-                            ""
                         );
                     })}
                 </div>
@@ -349,7 +349,7 @@ const TraineePage = () => {
     return JSON.stringify(traineeData) !== "{}" ? (
         <div className="App">
             <Information information={traineeData} />
-            <Statistic statistic={fakeTraineeData.traineeSeasonsDetail} />
+            <Statistic statistic={traineeData.resultPerYear} />
             <style jsx>
                 {`
                     .App {
