@@ -28,6 +28,8 @@ export default async function handler(req, res) {
         });
 
         const resultPerYear = {};
+        let maxLength = 0;
+        let maxYear;
 
         for (const y of year) {
             const [[data]] = await dbConnection.execute(`CALL GET_YEAR_RESULT(?, ?)`, [id, y.Year], (err, res, fields) => {
@@ -35,9 +37,14 @@ export default async function handler(req, res) {
             });
 
             resultPerYear[y.Year] = data;
+
+            if (data.length >= maxLength) {
+                maxLength = data.length;
+                maxYear = y;
+            }
         }
 
-        res.status(200).json({ data: { ...data[0], resultPerYear } });
+        res.status(200).json({ data: { ...data[0], resultPerYear, highestAchievementYear: maxYear } });
     } catch (e) {
         console.log(e);
         res.status(200).json({ auth: false });

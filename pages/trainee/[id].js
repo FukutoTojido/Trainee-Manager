@@ -164,7 +164,11 @@ const Information = (props) => {
                             </li>
                             <li>
                                 <img src="https://img.icons8.com/ios-glyphs/30/c2ac2f/trophy.png" />
-                                {props.information.bestAchievement}
+                                {JSON.stringify(props.information.resultPerYear) !== "{}"
+                                    ? `Episode ${
+                                          props.information.resultPerYear[props.information.highestAchievementYear.Year].at(-1).Episode
+                                      } (Season ${props.information.highestAchievementYear.Year})`
+                                    : "Haven't participated"}
                             </li>
                         </ul>
                     </div>
