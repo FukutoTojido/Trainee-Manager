@@ -38,7 +38,7 @@ const Statistic = (props) => {
                                 </div>
                                 <div className="score">
                                     <img src="https://img.icons8.com/ios-glyphs/30/cfb2ba/combo-chart--v1.png" />
-                                    {e.Votes}
+                                    {e.Episode === "1" ? parseFloat(e.No_of_vote).toFixed(2) : e.Episode === "5" ? "None" : parseInt(e.No_of_vote)}
                                 </div>
                             </div>
                         );
